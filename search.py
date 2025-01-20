@@ -4,10 +4,6 @@ import time
 import random
 from datetime import datetime
 
-# Set ChromeOptions
-options = Options()
-options.binary_location = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
-
 def initialize_session_state():
     if 'is_paused' not in st.session_state:
         st.session_state.is_paused = False
