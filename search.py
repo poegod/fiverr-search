@@ -3,6 +3,33 @@ import undetected_chromedriver as uc
 import time
 import random
 from datetime import datetime
+import shutil
+
+def get_chrome_binary_path():
+    # Try common locations for Chrome
+    paths = [
+        "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+        "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
+        "/usr/bin/google-chrome",  # Linux
+        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"  # macOS
+    ]
+    for path in paths:
+        if os.path.exists(path):
+            return path
+    # Try to locate Chrome automatically
+    chrome_path = shutil.which("google-chrome") or shutil.which("chrome")
+    if chrome_path:
+        return chrome_path
+    raise FileNotFoundError("Google Chrome executable not found. Please install Chrome.")
+
+# Use the detected path
+options = uc.ChromeOptions()
+options.binary_location = get_chrome_binary_path()
+options.add_argument('--headless')  # Add other options as needed
+
+# Create the Chrome driver
+driver = uc.Chrome(options=options)
+
 
 def initialize_session_state():
     if 'is_paused' not in st.session_state:
