@@ -7,7 +7,7 @@ import shutil
 import os
 
 def get_chrome_binary_path():
-    # Try common locations for Chrome
+    # Common locations for Chrome
     paths = [
         "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
         "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
@@ -17,19 +17,22 @@ def get_chrome_binary_path():
     for path in paths:
         if os.path.exists(path):
             return path
-    # Try to locate Chrome automatically
+    # Check system PATH
     chrome_path = shutil.which("google-chrome") or shutil.which("chrome")
     if chrome_path:
         return chrome_path
-    raise FileNotFoundError("Google Chrome executable not found. Please install Chrome.")
+    # Ask user for custom path
+    custom_path = input("Chrome executable not found. Please provide the path manually: ")
+    if os.path.exists(custom_path):
+        return custom_path
+    raise FileNotFoundError("Invalid Chrome path provided.")
 
-# Use the detected path
+# Use the detected or user-provided path
 options = uc.ChromeOptions()
 options.binary_location = get_chrome_binary_path()
-options.add_argument('--headless')  # Add other options as needed
-
-# Create the Chrome driver
+options.add_argument('--headless')
 driver = uc.Chrome(options=options)
+
 
 
 def initialize_session_state():
