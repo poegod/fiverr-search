@@ -4,6 +4,7 @@ import time
 import random
 from datetime import datetime
 import shutil
+import os
 
 def get_chrome_binary_path():
     # Try common locations for Chrome
